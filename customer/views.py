@@ -13,16 +13,6 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
-        # del self.request.session['order_list_pk']
-        # if 'order_list_pk' not in self.request.session:
-        #     ol = OrderList.objects.create()
-        #     self.request.session['order_list_pk'] = ol.pk
-        # ol_pk = self.request.session['order_list_pk']
-        # order_list = OrderList.objects.get(pk=ol_pk)
-        # ordered_foods = order_list.FoodOrder_list.all()
-        #
-        # context['food_order'] = ordered_foods.values()
-
         if 'food_orders_list' not in self.request.session:
             fo_list = []
             self.request.session['food_orders_list'] = fo_list
@@ -48,16 +38,6 @@ class FoodCategoryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(FoodCategoryListView, self).get_context_data(**kwargs)
-        # if 'order_list_pk' not in self.request.session:
-        #     ol = OrderList.objects.create()
-        #     self.request.session['order_list_pk'] = ol.pk
-        # ol_pk = self.request.session['order_list_pk']
-        # order_list = OrderList.objects.get(pk=ol_pk)
-        # ordered_foods = order_list.FoodOrder_list.all()
-        #
-        # context['food_order'] = ordered_foods.values()
-        # context['order_status'] = order_list.status
-
         if 'food_orders_list' not in self.request.session:
             fo_list = []
             self.request.session['food_orders_list'] = fo_list
@@ -89,22 +69,6 @@ class FoodCategoryDetailView(DetailView):
     template_name = 'customer/category_detail.html'
 
     def get_context_data(self, **kwargs):
-        # context = super(FoodCategoryDetailView, self).get_context_data(**kwargs)
-        # # del self.request.session['order_list_pk']
-        # if 'order_list_pk' not in self.request.session:
-        #     ol = OrderList.objects.create()
-        #     self.request.session['order_list_pk'] = ol.pk
-        # ol_pk = self.request.session['order_list_pk']
-        #
-        # order_list = OrderList.objects.get(pk=ol_pk)
-        # ordered_foods = order_list.FoodOrder_list.all()
-        #
-        # context['food_order'] = ordered_foods.values()
-        # context['ordered'] = ordered_foods.values_list('food', flat=True).distinct()
-        # context['order_status'] = order_list.status
-        #
-        # return context
-
         context = super(FoodCategoryDetailView, self).get_context_data(**kwargs)
         # del self.request.session['order_list_pk']
         if 'food_orders_list' not in self.request.session:
@@ -129,12 +93,6 @@ class FoodCategoryDetailView(DetailView):
         if request.POST.get('addFood'):
             food_pk = request.POST.get('food_pk')
             food = Food.objects.get(pk=food_pk)
-
-            # if 'order_list_pk' not in self.request.session:
-            #     ol = OrderList.objects.create()
-            #     self.request.session['order_list_pk'] = ol.pk
-            # ol_pk = self.request.session['order_list_pk']
-            # order_list = OrderList.objects.get(pk=ol_pk)
 
             if 'food_orders_list' not in self.request.session:
                 fo_list = []
