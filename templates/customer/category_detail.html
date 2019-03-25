@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{category.name}}</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .top-bar {
+            margin: 0px 0px 10px;
+            background-color: lightpink;
+            padding: 10px;
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+
+    {% if order_status == 'NO' %}
+        <div class="top-bar">You Haven't ordered yet.</div>
+
+    {% elif order_status == 'OR'%}
+        <div class="top-bar">You have ordered. Waiting for kitchen to accept.</div>
+
+    {% elif order_status == 'CH'%}
+        <div class="top-bar">you have changed your order. Waiting for kitchen to accept.</div>
+
+    {% elif order_status == 'PR'%}
+        <div class="top-bar">Kitchen is preparing your order. You can't change your order anymore.</div>
+
+    {% elif order_status == 'RE'%}
+        <div class="top-bar">Your order is ready.</div>
+
+    {% elif order_status == 'DE'%}
+        <div class="top-bar">Bon appetit.</div>
+    {% endif%}
+
+    <a style="margin: 10px" href="{% url 'customer:category_menu' %}">Back</a>
+
+    <ul style="list-style: none">
+        {% for food in category.foods.all %}
+
+        <li style="border:black 2px solid; padding: 10px; width: 300px; text-align: center; margin: 10px">
+            <img src="{{food.food_img.url}}" alt="{{food.food_name}}" width="300px" >
+            <h1>{{food.food_name}}</h1>
+            <p>{{food.food_details}}</p>
+            <h2>Cost: </h2>
+            {% if food.food_availability == True %}
+                <h4>{{food.cost}}</h4>
+            <form action="." method="post">
+                {% csrf_token %}
+                <input type="hidden" name="food_pk" value="{{food.pk}}">
+                <input type="submit" name="removeFood" value="-" width="10px"/>
+                <div style="display: inline-block; margin: 0 10px">
+                    {% if food_order %}
+                        {% for f in food_order %}
+                            {% if f.food_id == food.pk%}
+                                {{f.number}}
+                            {% endif %}
+                        {% endfor %}
+                        {% if food.pk not in ordered %}
+                            0
+                        {% endif %}
+                    {% else %}
+                        0
+                    {% endif %}
+                </div>
+                <input type="submit" name="addFood" value="+"/>
+            </form>
+            {% else %}
+                <h4>Not Available</h4>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+
+    <div style="margin: 10px">
+        {% if food_order %}
+            {% if order_status == 'OR' or order_status == 'CH' or order_status == 'NO'%}
+                <a class="btn btn-primary" href="{% url 'customer:orders' %}">
+                    {% if order_status == 'NO' %} Order
+                    {% elif order_status == 'CH' or order_status == 'OR'%} Change Order
+                    {% endif %}
+                </a>
+            {% endif %}
+        {% endif %}
+    </div>
+
+</body>
+</html>

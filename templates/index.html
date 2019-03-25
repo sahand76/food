@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .top-bar {
+            margin: 0px 0px 10px;
+            background-color: lightpink;
+            padding: 10px;
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+
+    {% if order_status == 'NO' %}
+        <div class="top-bar">You Haven't ordered yet.</div>
+
+    {% elif order_status == 'OR'%}
+        <div class="top-bar">You have ordered. Waiting for kitchen to accept.</div>
+
+    {% elif order_status == 'CH'%}
+        <div class="top-bar">you have changed your order. Waiting for kitchen to accept.</div>
+
+    {% elif order_status == 'PR'%}
+        <div class="top-bar">Kitchen is preparing your order. You can't change your order anymore.</div>
+
+    {% elif order_status == 'RE'%}
+        <div class="top-bar">Your order is ready.</div>
+
+    {% elif order_status == 'DE'%}
+        <div class="top-bar">Bon appetit.</div>
+    {% endif%}
+        <a style="margin:20px 10px" href="{% url 'customer:category_menu' %}">Menu</a>
+
+        <div style="margin: 10px">
+            {% if food_order %}
+            {% if order_status == 'OR' or order_status == 'CH' or order_status == 'NO'%}
+            <a class="btn btn-primary" href="{% url 'customer:orders' %}">Order</a>
+            {% endif %}
+            {% endif %}
+        </div>
+    </body>
+
+</html>

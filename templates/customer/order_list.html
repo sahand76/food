@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order List</title>
+    <script>
+            function myFunction() {
+                let checkBox = document.getElementById("id_takeaway");
+                let wprice = document.getElementById("with_price");
+                let noprice = document.getElementById("without_price");
+
+                let tot_wprice = document.getElementById("total_price_wt");
+                let tot_noprice = document.getElementById("total_price_nt");
+
+                if (checkBox.checked){
+                    wprice.style.display = "inline";
+                    noprice.style.display = "none";
+
+                    tot_wprice.style.display = "inline";
+                    tot_noprice.style.display = "none";
+                } else {
+                    noprice.style.display = "inline";
+                    wprice.style.display = "none";
+
+                    tot_noprice.style.display = "inline";
+                    tot_wprice.style.display = "none";
+                }
+            }
+
+    </script>
+</head>
+<body>
+
+    <h1>Order List:</h1>
+
+    <ul style="list-style: none">
+        {% if food_order%}
+            {% for order in ordered_foods %}
+
+            <li style="border:black 2px solid; padding: 10px; width: 300px; margin: 10px">
+                <img src="{{order.food.food_img.url}}" alt="{{order.food.food_name}}" width="300px" >
+                <h3 style="display: inline">Food: </h3>
+                <p style="display: inline">{{order.food}}</p>
+                <br>
+                <h3 style="display: inline">Number: </h3>
+                <p style="display: inline">{{order.number}}</p>
+                <br>
+                <h3 style="display: inline">Cost: </h3>
+                <p style="display: inline">{{order.cost}}</p>
+                <br>
+                <br>
+
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="food_pk" value="{{order.food.pk}}">
+                    <input type="submit" name="removeFood" value="-" width="10px"/>
+                    <div style="display: inline-block; margin: 0 10px">
+                        {% if food_order %}
+                            {% for f in food_order %}
+                                {% if f.food_id == order.food.pk%}
+                                    {{f.number}}
+                                {% endif %}
+                            {% endfor %}
+                            {% if order.food.pk not in ordered %}
+                                0
+                            {% endif %}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </div>
+                    <input type="submit" name="addFood" value="+"/>
+                </form>
+
+            </li>
+
+            {% endfor %}
+        {% endif %}
+     </ul>
+
+    <a href="{% url 'customer:category_menu' %}">Order More Food</a>
+
+    <form method="POST">
+        {{form.as_p}}
+        {%csrf_token%}
+
+        <div>
+            <h4 style="display: inline">Total Food Cost: </h4>
+            <p style="display: inline">{{total_food_cost}}</p>
+            <br>
+
+            <h4 style="display: inline">Tax: </h4>
+            <p style="display: inline">{{tax}}</p>
+            <br>
+
+            <h4 style="display: inline">Service Charge: </h4>
+            <p style="display: inline">{{service_charge}}</p>
+            <br>
+
+            <h4 style="display: inline">Packaging Charge: </h4>
+            <p id="with_price" style="display: none">{{packaging_charge}}</p>
+            <p id="without_price" style="display: inline">0</p>
+            <br>
+
+            <h4 style="display: inline">Total Cost: </h4>
+            <p id="total_price_nt" style="display: inline">{{total_cost_nt}}</p>
+            <p id="total_price_wt" style="display: none">{{total_cost_wt}}</p>
+            <br>
+            <br>
+        </div>
+
+        <div>
+            {% if food_order %}
+                <input type="submit" class="btn btn-primary" name="order" value="Submit">
+            {% endif %}
+        </div>
+    </form>
+
+</body>
+
+</html>
+
