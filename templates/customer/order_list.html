@@ -1,33 +1,11 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Order List</title>
-    <script>
-            function myFunction() {
-                let checkBox = document.getElementById("id_takeaway");
-                let wprice = document.getElementById("with_price");
-                let noprice = document.getElementById("without_price");
+    <link rel="stylesheet" href="{% static 'customer/css/order_list.css'%}">
 
-                let tot_wprice = document.getElementById("total_price_wt");
-                let tot_noprice = document.getElementById("total_price_nt");
-
-                if (checkBox.checked){
-                    wprice.style.display = "inline";
-                    noprice.style.display = "none";
-
-                    tot_wprice.style.display = "inline";
-                    tot_noprice.style.display = "none";
-                } else {
-                    noprice.style.display = "inline";
-                    wprice.style.display = "none";
-
-                    tot_noprice.style.display = "inline";
-                    tot_wprice.style.display = "none";
-                }
-            }
-
-    </script>
 </head>
 <body>
 
@@ -37,7 +15,7 @@
         {% if food_order%}
             {% for order in ordered_foods %}
 
-            <li style="border:black 2px solid; padding: 10px; width: 300px; margin: 10px">
+            <li id="list-items">
                 <img src="{{order.food.food_img.url}}" alt="{{order.food.food_name}}" width="300px" >
                 <h3 style="display: inline">Food: </h3>
                 <p style="display: inline">{{order.food}}</p>
@@ -116,6 +94,6 @@
     </form>
 
 </body>
-
+<script src="{% static 'customer/js/order_list.js'%}" type="text/javascript" ></script>
 </html>
 

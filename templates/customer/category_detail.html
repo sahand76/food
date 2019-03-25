@@ -1,20 +1,10 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{{category.name}}</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-        .top-bar {
-            margin: 0px 0px 10px;
-            background-color: lightpink;
-            padding: 10px;
-            width: 500px;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'customer/css/category_detail.css'%}">
 </head>
 <body>
 
@@ -89,4 +79,5 @@
     </div>
 
 </body>
+<script src="{% static 'customer/js/category_detail.js'%}" type="text/javascript" ></script>
 </html>
