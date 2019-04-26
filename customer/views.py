@@ -86,6 +86,7 @@ class FoodCategoryDetailView(DetailView):
         context['food_order'] = ordered_foods.values()
         context['ordered'] = ordered_foods.values_list('food', flat=True).distinct()
         context['order_status'] = order_list.status
+        context['categories'] = FoodCategory.objects.all()
 
         return context
 

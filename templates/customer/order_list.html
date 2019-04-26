@@ -2,36 +2,41 @@
 {% load staticfiles %}
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
     <title>Order List</title>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'customer/css/order_list.css'%}">
 
 </head>
 <body>
+  <header class="hheader">
+    <h1 id ="sabad">سبد خرید شما</h1>
+</header>
 
-    <h1>Order List:</h1>
-
+<main class="main_content">
+<div class="wrapper">
     <ul style="list-style: none">
         {% if food_order%}
             {% for order in ordered_foods %}
 
             <li id="list-items">
-                <img src="{{order.food.food_img.url}}" alt="{{order.food.food_name}}" width="300px" >
-                <h3 style="display: inline">Food: </h3>
+                <!-- <img src="{{order.food.food_img.url}}" alt="{{order.food.food_name}}" width="300px" > -->
+                <h3 style="display: inline">غذا:</h3>
                 <p style="display: inline">{{order.food}}</p>
-                <br>
-                <h3 style="display: inline">Number: </h3>
+
+                <h3 style="display: inline">تعداد: </h3>
                 <p style="display: inline">{{order.number}}</p>
-                <br>
-                <h3 style="display: inline">Cost: </h3>
-                <p style="display: inline">{{order.cost}}</p>
-                <br>
-                <br>
+
+                <h3 style="display: ">هزینه‌ی کل: </h3>
+                <p style="display: inline">{{order.cost}} تومان</p>
+
+
 
                 <form action="" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="food_pk" value="{{order.food.pk}}">
-                    <input type="submit" name="removeFood" value="-" width="10px"/>
+                    <button id="minus" type="submit" name="removeFood" value="-"><i class="fa fa-minus"></i></button>
                     <div style="display: inline-block; margin: 0 10px">
                         {% if food_order %}
                             {% for f in food_order %}
@@ -46,7 +51,7 @@
                             0
                         {% endif %}
                     </div>
-                    <input type="submit" name="addFood" value="+"/>
+                    <button id="plus" type="submit" name="addFood" value="+"><i class="fa fa-plus"></i></button>
                 </form>
 
             </li>
@@ -54,46 +59,50 @@
             {% endfor %}
         {% endif %}
      </ul>
+   </div>
+   <div class="more_food">
+     <a  href="{% url 'customer:category_menu' %}">سفارش خود را ادامه دهید</a>
+   </div>
+<div class="costing" display="inline-block">
 
-    <a href="{% url 'customer:category_menu' %}">Order More Food</a>
-
-    <form method="POST">
+    <form id="cost_form" method="POST" >
         {{form.as_p}}
         {%csrf_token%}
 
-        <div>
-            <h4 style="display: inline">Total Food Cost: </h4>
-            <p style="display: inline">{{total_food_cost}}</p>
+        <div >
+            <h4 style="display: inline">هزینه‌ی کل غذا‌ها : </h4>
+            <p style="display: inline">{{total_food_cost}} تومان</p>
             <br>
 
-            <h4 style="display: inline">Tax: </h4>
-            <p style="display: inline">{{tax}}</p>
+            <h4 style="display: inline">مالیات بر ارزش افزوده : </h4>
+            <p style="display: inline">{{tax}} تومان</p>
             <br>
 
-            <h4 style="display: inline">Service Charge: </h4>
-            <p style="display: inline">{{service_charge}}</p>
+            <h4 style="display: inline">هزینه‌ی سرویس : </h4>
+            <p style="display: inline">{{service_charge}} تومان</p>
             <br>
 
-            <h4 style="display: inline">Packaging Charge: </h4>
-            <p id="with_price" style="display: none">{{packaging_charge}}</p>
-            <p id="without_price" style="display: inline">0</p>
+            <h4 style="display: inline">هزینه‌ی بسته‌بندی : </h4>
+            <p id="with_price" style="display: none">{{packaging_charge}} تومان</p>
+            <p id="without_price" style="display: inline"> تومان</p>
             <br>
 
-            <h4 style="display: inline">Total Cost: </h4>
-            <p id="total_price_nt" style="display: inline">{{total_cost_nt}}</p>
-            <p id="total_price_wt" style="display: none">{{total_cost_wt}}</p>
+            <h4 style="display: inline">هزینه‌ی نهایی قابل پرداخت : </h4>
+            <p id="total_price_nt" style="display: inline">{{total_cost_nt}} تومان</p>
+            <p id="total_price_wt" style="display: none">{{total_cost_wt}} تومان</p>
             <br>
             <br>
         </div>
 
         <div>
             {% if food_order %}
-                <input type="submit" class="btn btn-primary" name="order" value="Submit">
+                <input id="finalize" type="submit" class="btn btn-primary" name="order" value="نهایی سازی سفارش">
             {% endif %}
         </div>
     </form>
-
-</body>
+    </div>
+</main>
+<footer>bottom</footer>
 <script src="{% static 'customer/js/order_list.js'%}" type="text/javascript" ></script>
+</body>
 </html>
-
