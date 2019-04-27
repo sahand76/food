@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'kitchen',
     'restaurant_admin',
     'customer',
-    'bootstrap4',
+    
 ]
 
 MIDDLEWARE = [
